@@ -9,4 +9,5 @@ description = "Synchronous, deterministic in-memory order management state machi
 vyapaar-core = { workspace = true }
 chrono = { workspace = true }
 rust_decimal = { workspace = true }
+uuid = { workspace = true }
 thiserror = { workspace = true }
