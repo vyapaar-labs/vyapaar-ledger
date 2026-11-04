@@ -3,8 +3,21 @@ name = "vyapaar-ledger-journal"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+description = "Double-entry general ledger and Indian statutory tax calculator (STT, GST, stamp duty, SEBI fees)"
 
 [dependencies]
 vyapaar-core = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 thiserror = { workspace = true }
+
+[dev-dependencies]
+proptest = { workspace = true }
+rust_decimal_macros = "1"
+
+[[bench]]
+name = "golden_tests"
+path = "benches/golden_tests.rs"
+harness = false

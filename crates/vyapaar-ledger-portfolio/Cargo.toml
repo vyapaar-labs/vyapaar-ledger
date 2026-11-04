@@ -3,8 +3,18 @@ name = "vyapaar-ledger-portfolio"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+description = "Pure portfolio valuation: positions, marks, FIFO tax lots, and T+1 settlement (ADR 0032)"
 
 [dependencies]
 vyapaar-core = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
 serde = { workspace = true }
-thiserror = { workspace = true }
+
+[dev-dependencies]
+divan = "0.1"
+
+[[bench]]
+name = "portfolio_benchmarks"
+path = "benches/portfolio_benchmarks.rs"
+harness = false

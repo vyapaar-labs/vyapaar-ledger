@@ -14,11 +14,45 @@ rust-version = "1.85"
 license = "AGPL-3.0"
 repository = "https://github.com/vyapaar-labs/vyapaar-ledger"
 
+# Zero-I/O dependency policy: no tokio, no tracing, no async runtime — every
+# member of this workspace is a pure, synchronous domain library. Temporal
+# determinism is enforced by passing `now: DateTime<Utc>` explicitly instead of
+# calling `Utc::now()` inside the domain.
 [workspace.dependencies]
 vyapaar-core = { path = "../vyapaar-core" }
-tokio = { version = "1", features = ["full"] }
+vyapaar-ledger = { path = "crates/vyapaar-ledger" }
+vyapaar-ledger-oms = { path = "crates/vyapaar-ledger-oms" }
+vyapaar-ledger-portfolio = { path = "crates/vyapaar-ledger-portfolio" }
+vyapaar-ledger-journal = { path = "crates/vyapaar-ledger-journal" }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+rust_decimal = { version = "1", features = ["serde-with-str"] }
 serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+serde_json = { version = "1", features = ["float_roundtrip"] }
 thiserror = "1"
-tracing = "0.1"
-rust_decimal = "1"
+proptest = "1"
+
+[profile.dev]
+opt-level = 1
+debug = false
+strip = "debuginfo"
+
+[profile.test]
+opt-level = 1
+debug = false
+strip = "debuginfo"
+
+[profile.dbg]
+inherits = "dev"
+debug = 2
+strip = "none"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+
+[profile.prod]
+inherits = "release"
+lto = true
+codegen-units = 1

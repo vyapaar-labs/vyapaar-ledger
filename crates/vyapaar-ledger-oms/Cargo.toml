@@ -3,8 +3,10 @@ name = "vyapaar-ledger-oms"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+description = "Synchronous, deterministic in-memory order management state machine (SEBI order lifecycle)"
 
 [dependencies]
 vyapaar-core = { workspace = true }
-serde = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
 thiserror = { workspace = true }

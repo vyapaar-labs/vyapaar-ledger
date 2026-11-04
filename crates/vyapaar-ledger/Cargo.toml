@@ -3,8 +3,14 @@ name = "vyapaar-ledger"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+description = "Facade of the vyapaar-ledger domain heart: repository traits, portfolio sizing hooks, and subsystem re-exports"
 
 [dependencies]
 vyapaar-core = { workspace = true }
+vyapaar-ledger-journal = { workspace = true }
+vyapaar-ledger-oms = { workspace = true }
+vyapaar-ledger-portfolio = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
 serde = { workspace = true }
 thiserror = { workspace = true }
