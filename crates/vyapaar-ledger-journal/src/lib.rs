@@ -1,0 +1,1 @@
+//! vyapaar-ledger-journal implementation.
