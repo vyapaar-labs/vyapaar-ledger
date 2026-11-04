@@ -73,3 +73,34 @@ cargo fmt --check
 cargo clippy --all-targets -- -D warnings
 cargo test --workspace
 ```
+
+---
+
+## 4. Execution Status — Tier 1B complete (2026-11-04)
+
+Every Fix in §2 is merged and the §3 gate passes: `cargo fmt --check`,
+`cargo clippy --all-targets -- -D warnings`, `cargo test --workspace`
+(123 tests), and zero `#[cfg(test)]` in `crates/*/src/`.
+
+| Fix | Commit | Delivered |
+| :-- | :----- | :-------- |
+| Fix 1 — workspace manifest purity | `e22c95f` | zero-I/O dependency manifest, canonical path deps, no tokio |
+| Fix 2 — OMS | `08112a8` | pure synchronous order state machine, `target_quantity` recorded at registration |
+| Fix 3 — portfolio | `7c56840` | canonical FIFO `TaxLot`/`MatchedLot` matching moved onto the `AccountState` aggregate |
+| Fix 4 — journal | `2019ae6` | double-entry ledger keyed by the journal-owned `AccountCode`, pure contract-note module |
+| Fix 5 — facade | `5b6a051` | canonical core/portfolio/journal re-exports, aggregate-delegating in-memory repositories |
+
+Migration deltas beyond the letter of §2 (kept documented here because the
+guide is the Tier 1B playbook):
+
+- §Fix 3: the orphaned legacy modules `engine.rs`, `error.rs`, `marks.rs`
+  and `state.rs` (which referenced dependencies never in this crate's
+  manifest) were **not** ported as files; their live functionality survives
+  under canonical names (`Marks`, `apply_fill`, `apply_corporate_action`,
+  `settle_trades`, `PortfolioState`/`AccountState`).
+- §Fix 5: the strongly typed ids and `FillReport` are the canonical
+  `vyapaar_core` types (not local duplicates), `AccountCode` is owned by
+  the journal crate, and `PositionRepository::match_lots` takes the
+  trading account explicitly — the canonical `FillReport` carries no
+  account field. Every timestamp and UUID is caller-injected: the
+  workspace is temporally deterministic by construction.
