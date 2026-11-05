@@ -141,8 +141,8 @@ fn test_position_repository_fifo_tax_lot_matching() {
     // - 20 shares from LOT_002: PnL = 20 * (3500 - 3200) = ₹6,000 (Short-Term)
     // - 30 shares remaining in LOT_002
     //
-    // The canonical core FillReport knows the order context, not the trading
-    // account: the account is passed to `match_lots` explicitly.
+    // The canonical core FillReport carries its own account id, so `match_lots` reads the
+    // account from the fill rather than taking it separately.
     let sell_fill = FillReport::new(
         "TRD_SELL_901",
         "ORD_SELL_01",
@@ -153,10 +153,11 @@ fn test_position_repository_fifo_tax_lot_matching() {
         Quantity::from_u64(70),
         "MOMENTUM_ALPHA",
         fill_date,
+        account.as_str(),
     )
     .with_fee(Money::inr(Decimal::from(50)));
 
-    let matched = repo.match_lots(&account, &sell_fill).unwrap();
+    let matched = repo.match_lots(&sell_fill).unwrap();
     assert_eq!(matched.len(), 2);
 
     // First matched lot (LOT_001)

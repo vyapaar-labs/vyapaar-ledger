@@ -232,14 +232,8 @@ pub trait PositionRepository: Send + Sync {
     /// Match an incoming fill report against open tax lots using strict FIFO
     /// matching, returning the per-lot realized details.
     ///
-    /// The trading account is an explicit argument: the canonical core
-    /// [`FillReport`] carries no account field — the execution layer knows
-    /// the account it routed the fill to.
-    fn match_lots(
-        &mut self,
-        account_id: &AccountId,
-        fill: &FillReport,
-    ) -> Result<Vec<MatchedLot>, DomainError>;
+    /// The account ID is read from the fill report's `account_id` field.
+    fn match_lots(&mut self, fill: &FillReport) -> Result<Vec<MatchedLot>, DomainError>;
 }
 
 /// Pure domain repository managing immutable double-entry ledger transactions and balances.
@@ -386,11 +380,15 @@ impl PositionRepository for InMemoryPositionRepository {
         Ok(())
     }
 
-    fn match_lots(
-        &mut self,
-        account_id: &AccountId,
-        fill: &FillReport,
-    ) -> Result<Vec<MatchedLot>, DomainError> {
+    fn match_lots(&mut self, fill: &FillReport) -> Result<Vec<MatchedLot>, DomainError> {
+        // Get account_id from fill report
+        let account_id =
+            fill.account_id
+                .as_deref()
+                .map(AccountId::new)
+                .ok_or(DomainError::Validation(
+                    "FillReport missing account_id - cannot match lots".to_string(),
+                ))?;
         // The aggregate owns the matching rule; the repository only adapts the
         // canonical core FillReport into the portfolio matching input.
         let lot_fill = LotFill {
@@ -400,7 +398,7 @@ impl PositionRepository for InMemoryPositionRepository {
             quantity: fill.quantity,
             timestamp: fill.timestamp,
         };
-        Ok(self.state_for(account_id).match_lots(&lot_fill))
+        Ok(self.state_for(&account_id).match_lots(&lot_fill))
     }
 }
 
