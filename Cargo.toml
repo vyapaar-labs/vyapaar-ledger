@@ -5,6 +5,7 @@ members = [
   "crates/vyapaar-ledger-oms",
   "crates/vyapaar-ledger-portfolio",
   "crates/vyapaar-ledger-journal",
+  "crates/vyapaar-ledger-allocation",
 ]
 
 [workspace.package]
@@ -24,6 +25,7 @@ vyapaar-ledger = { path = "crates/vyapaar-ledger" }
 vyapaar-ledger-oms = { path = "crates/vyapaar-ledger-oms" }
 vyapaar-ledger-portfolio = { path = "crates/vyapaar-ledger-portfolio" }
 vyapaar-ledger-journal = { path = "crates/vyapaar-ledger-journal" }
+vyapaar-ledger-allocation = { path = "crates/vyapaar-ledger-allocation" }
 chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "1", features = ["v4", "serde"] }
 rust_decimal = { version = "1", features = ["serde-with-str"] }
