@@ -24,8 +24,8 @@
 * **Rich Domain Aggregates**: Invariants are enforced on construction and state mutation (`portfolio.apply_fill(&fill)?`).
 * **Zero Floats Policy**: Decimal arithmetic only (`rust_decimal::Decimal`). Zero floats.
 * **TDD & Parallel Test Directory Rule (MANDATORY)**:
-  - All tests must live in `tests/` parallel to `src/`.
-  - **STRICTLY FORBIDDEN**: In-file `#[test]` inside `src/`.
+  - All tests must live in `tests/` parallel to `src/`, or in a `src/tests/` module directory.
+  - **STRICTLY FORBIDDEN**: In-file `#[test]` inside production `src/` files.
   - Maintain golden accounting vectors in `tests/golden/`.
 
 ---
