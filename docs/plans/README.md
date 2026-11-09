@@ -7,6 +7,10 @@ Per workspace rule `.agents/rules/gap-tracking.md`:
 
 ## Active Plans
 
+| # | Title | Target Scope | Status |
+|---|-------|--------------|--------|
+| [0002](0002-trade-performance-journal.md) | Trade performance journal: annotations & analytics engine | New `vyapaar-ledger-performance` crate | Proposed |
+
 ## Implemented Plans
 
 | # | Title | Target Scope | Implemented In |
