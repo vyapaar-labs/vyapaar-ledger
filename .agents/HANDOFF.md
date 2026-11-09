@@ -13,6 +13,7 @@
 - Zero-I/O domain purity respected: no network, filesystem, or clock queries; `as_of` timestamp injected explicitly by the caller (temporal determinism).
 - Bound handling: Phase 1 solves the unconstrained optimum in exact arithmetic, then projects into the box via iterative clip-and-renormalize (documented simplification; exact bound-constrained QP is a follow-on).
 - Compiles cleanly on native x86_64/aarch64; workspace-wide `cargo test --profile prod`, `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings` all green.
+- `docs/migration-guide.md` decimated: file-by-file migration map moved to `docs/design/code-migration-map.md`; verification commands moved to `docs/roadmap/migration-verification.md`; original `migration-guide.md` removed.
 
 ## Immediate Next Step
 
