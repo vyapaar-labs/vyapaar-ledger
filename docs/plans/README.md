@@ -7,11 +7,8 @@ Per workspace rule `.agents/rules/gap-tracking.md`:
 
 ## Active Plans
 
-| # | Title | Target Scope | Status |
-|---|-------|--------------|--------|
-| [0001](0001-portfolio-allocation-and-optimization.md) | Portfolio Allocation & Optimization Engine | `vyapaar-ledger-allocation` | Phase 1 implemented in `b35a314`; Phases 2–4 open |
-
 ## Implemented Plans
 
 | # | Title | Target Scope | Implemented In |
 |---|-------|--------------|----------------|
+| 0001 | Portfolio Allocation & Optimization Engine | `vyapaar-ledger-allocation` | Phase 1: new `vyapaar-ledger-allocation` crate with `AllocationObjective::{MeanVariance, RiskParity}`, `Constraint::WeightBounds`, `PortfolioState` read-adapter over `vyapaar-ledger-portfolio`, `TargetWeights` output, and the pure `optimize()` entry point (`src/lib.rs`); 17 tests in `tests/optimize_tests.rs`; commits `b35a314`. Phases 2 (Hrp/Herc), 3 (BlackLitterman), and 4 (discrete/whole-share allocation) are open future phases, not part of this slice. |
