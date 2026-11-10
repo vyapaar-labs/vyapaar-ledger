@@ -1,0 +1,17 @@
+[package]
+name = "vyapaar-ledger-performance"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Pure trade-performance journal: annotations, performance metrics, edge score, daily P&L calendar and account comparison (vyapaar-ledger plan 0002)"
+
+[dependencies]
+vyapaar-core = { workspace = true }
+vyapaar-ledger-portfolio = { workspace = true }
+chrono = { workspace = true }
+rust_decimal = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
