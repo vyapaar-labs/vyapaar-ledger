@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use chrono::NaiveDate;
 
 use crate::model::{
-    AccountProvenance, JournalAccount, JournalAccountId, JournalNote, PnlConvention,
+    AccountProvenance, ClosedTrade, JournalAccount, JournalAccountId, JournalNote, PnlConvention,
     TradeAnnotation,
 };
 use crate::{Currency, Money};
@@ -33,6 +33,8 @@ pub struct JournalStore {
     annotations: HashMap<String, TradeAnnotation>,
     /// Day-keyed notes: (account_id, day) -> note text.
     notes: HashMap<(JournalAccountId, NaiveDate), String>,
+    /// Closed trades keyed by trade/lot id.
+    closed_trades: HashMap<String, ClosedTrade>,
 }
 
 impl JournalStore {
@@ -49,6 +51,11 @@ impl JournalStore {
     /// Returns the number of trade annotations.
     pub fn annotation_count(&self) -> usize {
         self.annotations.len()
+    }
+
+    /// Returns the number of closed trades.
+    pub fn closed_trade_count(&self) -> usize {
+        self.closed_trades.len()
     }
 
     /// Returns the number of day-keyed notes.
@@ -123,6 +130,47 @@ impl JournalStore {
     /// Remove a trade annotation by trade/lot id.
     pub fn remove_annotation(&mut self, trade_id: &str) -> Option<TradeAnnotation> {
         self.annotations.remove(trade_id)
+    }
+
+    /// Record (or replace) a closed trade in the store.
+    pub fn set_closed_trade(&mut self, trade: ClosedTrade) {
+        self.closed_trades.insert(trade.trade_id.clone(), trade);
+    }
+
+    /// Get a closed trade by trade/lot id.
+    pub fn closed_trade(&self, trade_id: &str) -> Option<&ClosedTrade> {
+        self.closed_trades.get(trade_id)
+    }
+
+    /// List all closed trades, sorted by exit date ascending then trade id.
+    pub fn closed_trades(&self) -> Vec<&ClosedTrade> {
+        let mut trades: Vec<&ClosedTrade> = self.closed_trades.values().collect();
+        trades.sort_by_key(|t| (t.exit_date, t.trade_id.as_str()));
+        trades
+    }
+
+    /// List closed trades whose exit date falls within `[from, to]` inclusive.
+    pub fn closed_trades_in_range(
+        &self,
+        from: Option<NaiveDate>,
+        to: Option<NaiveDate>,
+    ) -> Vec<&ClosedTrade> {
+        let mut trades: Vec<&ClosedTrade> = self.closed_trades.values().collect();
+        trades.retain(|t| {
+            if let Some(f) = from {
+                if t.exit_date < f {
+                    return false;
+                }
+            }
+            if let Some(t_) = to {
+                if t.exit_date > t_ {
+                    return false;
+                }
+            }
+            true
+        });
+        trades.sort_by_key(|t| (t.exit_date, t.trade_id.as_str()));
+        trades
     }
 
     /// Upsert a day-keyed journal note for an account. The account must exist.
