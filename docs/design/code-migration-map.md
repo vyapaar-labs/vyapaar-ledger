@@ -71,15 +71,18 @@
 # Run from the repository root
 grep -rn "#\[cfg(test)\]" crates/*/src/ && exit 1 || true
 cargo fmt --check
-cargo clippy --all-targets -- -D warnings
-cargo test --workspace
+cargo clippy --workspace --all-targets --profile prod -- -D warnings
+cargo test --workspace --profile prod
 ```
 
-## Migration Execution Status — Tier 1B complete (2026-11-04)
+## Migration Execution Status — Tier 1B complete
 
 Every Fix in §2 is merged and the verification gate passes:
-`cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test --workspace`
-(123 tests), and zero `#[cfg(test)]` in `crates/*/src/`.
+`cargo fmt --check`, `cargo clippy --workspace --all-targets --profile prod -- -D warnings`,
+`cargo test --workspace --profile prod` (182 tests as of 2026-11-12), and zero
+`#[cfg(test)]` in `crates/*/src/`. See
+[`implementation-record.md`](implementation-record.md) for the full landing and
+verification history.
 
 | Fix | Commit | Delivered |
 | :-- | :----- | :-------- |
