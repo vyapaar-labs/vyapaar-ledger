@@ -1,8 +1,8 @@
 # `vyapaar-ledger` — Historical Migration Map (honba-kokoro → vyapaar-ledger)
 
 > **Tier**: Tier 1B (Depends only on `vyapaar-core`)
-> **Source**: `/home/pmallapp/Devel/Finance/honba-workspace/honba-kokoro`
-> **Target**: `/home/pmallapp/Devel/Finance/vyapaar-labs/vyapaar-ledger`
+> **Source**: `honba-workspace/honba-kokoro`
+> **Target**: `vyapaar-ledger`
 > **Status**: Migration complete (all 5 Fixes merged).
 
 ## Sub-Crate Mapping Table
@@ -68,7 +68,7 @@
 ## Verification Commands
 
 ```bash
-cd /home/pmallapp/Devel/Finance/vyapaar-labs/vyapaar-ledger
+# Run from the repository root
 grep -rn "#\[cfg(test)\]" crates/*/src/ && exit 1 || true
 cargo fmt --check
 cargo clippy --all-targets -- -D warnings
